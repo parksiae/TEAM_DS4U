@@ -1,17 +1,20 @@
 package bbs;
  
-import java.sql.*;
-import java.util.*;
- 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 public class BbsDAO {
     private Connection conn;            // DB에 접근하는 객체
     private ResultSet rs;                // DB data를 담을 수 있는 객체  (Ctrl + shift + 'o') -> auto import
     
     public BbsDAO(){ 
         try {
-			String dbURL = "jdbc:mysql://localhost:3306/BBS?characterEncoding=UTF-8&serverTimezone=UTC";
+			String dbURL = "jdbc:mysql://localhost:3306/eps?characterEncoding=UTF-8&serverTimezone=UTC";
 			String dbID = "root";
-			String dbPassword = "acbd2983!@#";
+			String dbPassword = "1111";
 			Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(dbURL, dbID, dbPassword);            
         } catch (Exception e) {

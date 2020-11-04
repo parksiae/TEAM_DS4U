@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="apv.ApvDAO" %>
 <%@ page import="apv.ApvDTO" %>
-<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <%
@@ -15,20 +14,22 @@
 		response.sendRedirect("index.jsp");
 		return;	
 	}
-	String pageNumber = "1";
-	if (request.getParameter("pageNumber") != null) {
-		pageNumber = request.getParameter("pageNumber");
+	String APV_SQ = null;
+	if (request.getParameter("APV_SQ") != null) {
+		APV_SQ = (String) request.getParameter("APV_SQ");
 	}
-	try {
-		Integer.parseInt(pageNumber);
-	} catch (Exception e) {
+	if (APV_SQ == null || APV_SQ.equals("")) {
 		session.setAttribute("messageType", "오류 메시지");
-		session.setAttribute("messageContent", "페이지 번호가 잘못되었습니다.");
-		response.sendRedirect("apvView.jsp");
-		return;			
+		session.setAttribute("messageContent", "게시물을 선택해주세요.");
+		response.sendRedirect("index.jsp");
+		return;	
 	}
-	ArrayList<ApvDTO> apvList = new ApvDAO().getList(pageNumber);
+
+	
+	ApvDAO apvDAO = new ApvDAO();
+	ApvDTO apv = apvDAO.getApv(APV_SQ);
 %>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">  <!-- 반응형 웹에 사용하는 메타태그 -->
@@ -59,7 +60,7 @@
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li><a href="index.jsp">메인</a></li>
                 <li><a href="boardView.jsp">게시판</a></li>
-                <li class="active"><a href="apvView.jsp">정보화사업</a></li>
+            	<li class="active"><a href="apvView.jsp">정보화사업</a></li>
             </ul>
             
 			<%
@@ -109,106 +110,55 @@
 		<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd">
 			<thead>
 				<tr>
-					<th colspan="9"><h4>정보화사업</h4></th>
+					<th colspan="2"><h4>정보화 사업 보기</h4></th>
 				</tr>
 				<tr>
-					<th style="background-color: #fafafa; color: #000000;"><h5>번호</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>사업명</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>사업 기간</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>사업 시작일</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>사업 종료일</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>소요 예산</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>사업 담당자</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>연락처</h5></th>
-					<th style="background-color: #fafafa; color: #000000;"><h5>사업방침번호</h5></th>
+					<td style="background-color: #fafafa; color: #000000; width: 120px; "><h5>사업명</h5></td>
+					<td colspan="2"><h5><%= apv.getAPV_NM() %></h5></td>
 				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>사업기간</h5></td>
+					<td colspan="2"><h5><%= apv.getAPV_DATE() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>사업시작일</h5></td>
+					<td colspan="2"><h5><%= apv.getAPV_STT_DATE() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>사업종료일</h5></td>
+					<td colspan="2"><h5><%= apv.getAPV_FIN_DATE() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>소요예산</h5></td>
+					<td colspan="2"><h5><%= apv.getAPV_BUDGET() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>사업담당자</h5></td>
+					<td colspan="2"><h5><%= apv.getSTF_ID() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>연락처</h5></td>
+					<td colspan="2"><h5><%= apv.getAPV_PHONE() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>사업방침번호</h5></td>
+					<td colspan="2"><h5><%= apv.getAPV_POLICY_SQ() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>첨부파일</h5></td>
+					<td colspan="2"><h5><a href="apvDownload.jsp?APV_SQ=<%= apv.getAPV_SQ() %>"><%= apv.getAPV_FILE() %></h5></td>
+				</tr>
+				
 			</thead>
 			<tbody>
-			<%
-				for (int i=0; i<apvList.size(); i++) {
-					ApvDTO apv = apvList.get(i);
-			%>
-			<tr>
-					<td><%= apv.getAPV_SQ() %></td>
-					<td style="text-align: left;">
-					<a href="apvShow.jsp?APV_SQ=<%= apv.getAPV_SQ() %>">
-					<%= apv.getAPV_NM() %>
-					</a>
-					<td><%= apv.getAPV_DATE() %></td>
-					<td><%= apv.getAPV_STT_DATE() %></td>
-					<td><%= apv.getAPV_FIN_DATE() %></td>
-					<td><%= apv.getAPV_BUDGET() %></td>
-					<td><%= apv.getSTF_ID() %></td>
-					<td><%= apv.getAPV_PHONE() %></td>
-					<td><%= apv.getAPV_POLICY_SQ() %></td>
-
-				</tr>
-			<%
-				}
-			%>
-			<div class="search-form margin-top first align-right">
-				<h3 class="hidden">공지사항 검색폼</h3>
-				<form class="table-form">
-					<fieldset>
-						<legend class="hidden">공지사항 검색 필드</legend>
-						<label class="hidden">검색분류</label>
-						<select name="f">
-							<option  value="title">제목</option>
-							<option  value="writerId">작성자</option>
-						</select> 
-						<label class="hidden">검색어</label>
-						<input type="text" name="q" value=""/>
-						<input class="btn btn-search" type="submit" value="검색" />
-					</fieldset>
-				</form>
-			</div>
 				<tr>
-					<td colspan="9">
-						<a href="apvWrite.jsp" class="btn btn-primary pull-right" type="submit">글쓰기</a>
-						<ul class="pagination" style="margin: 0 auto;">
-					<% 
-						int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
-						if (Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
-						int targetPage = new ApvDAO().targetPage(pageNumber);
-						if (startPage != 1) {
-					%>
-						<li><a href="apvView.jsp?pageNumber=<%= startPage - 1 %>"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-					<%
-						} else {
-					%>
-						<li><span class="glyphicon glyphicon-chevron-left" style="color: gray;"></span></li>
-					<%
-						}
-						for (int i=startPage; i<Integer.parseInt(pageNumber); i++) {
-					%>
-						<li><a href="apvView.jsp?pageNumber=<%= i %>"><%= i %></a></li>
-					<%
-						}
-					%>
-						<li class="active"><a href="apvView.jsp?pageNumber=<%= pageNumber %>"><%= pageNumber %></a></li>	
-					<%
-						for (int i=Integer.parseInt(pageNumber) + 1; i<=targetPage + Integer.parseInt(pageNumber); i++) {
-							if (i < startPage + 10) {
-					%>
-						<li><a href="apvView.jsp?pageNumber=<%= i %>"><%= i %></a></li>
-					<%
-							}
-						}
-						if (targetPage + Integer.parseInt(pageNumber) > startPage + 9) {
-					%>
-						<li><a href="apvView.jsp?pageNumber=<%= startPage + 10 %>"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-					<%
-						} else {
-					%>
-						<li><span class="glyphicon glyphicon-chevron-right" style="color: gray;"></span></li>
-					<%
-						}
-					%>	
-						
-						</ul>
+					<td colspan="5" style="text-align : right;">
+						<a href="apvView.jsp" class="btn btn-primary">목록</a>
+
 					</td>
 				</tr>			
 			</tbody>
+		
 		</table>
 	</div>
 	<%

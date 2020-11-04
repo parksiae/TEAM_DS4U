@@ -359,6 +359,57 @@ public class BoardDAO {
         	}       	
         }
         return 0;          	
-    } 
+    }
+    
+    public ArrayList<BoardDTO> getSearch(String BOARD_DIVIDE, String searchType, String search, int pageNumber) {
+    	//if (BOARD_DIVIDE.equals("전체")) {
+    	//	BOARD_DIVIDE = "";
+    	//}
+    	ArrayList<BoardDTO> searchList = null;
+    	Connection conn = null;
+    	PreparedStatement pstmt = null;
+    	ResultSet rs = null;
+        String SQL = "";
+        try {
+        	if (searchType.equals("최신순")) {
+        		SQL = "SELECT * FROM BOARD WHERE BOARD_DIVIDE LIKE ? AND CONCAT(STF_ID, BOARD_NM, BOARD_TXT) LIKE " + "? ORDER BY BOARD_SQ DESC LIMIT " + pageNumber * 5 + ", " + pageNumber * 5 + 6;
+        	} else if (searchType.equals("조회순")) {
+        		SQL = "SELECT * FROM BOARD WHERE BOARD_DIVIDE LIKE ? AND CONCAT(STF_ID, BOARD_NM, BOARD_TXT) LIKE " + "? ORDER BY BOARDHIT DESC LIMIT " + pageNumber * 5 + ", " + pageNumber * 5 + 6;
+        	}
+        	conn = dataSource.getConnection();
+            pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, "%" + BOARD_DIVIDE + "%");
+            pstmt.setString(1, "%" + search + "%");
+            rs = pstmt.executeQuery(); // 실행 결과를 넣음
+            searchList = new ArrayList<BoardDTO>();
+            while (rs.next()) {     // 결과가 존재하면
+            	BoardDTO board = new BoardDTO();
+            	board.setSTF_ID(rs.getString("STF_ID"));
+            	board.setBOARD_SQ(rs.getInt("BOARD_SQ"));
+            	board.setBOARD_NM(rs.getString("BOARD_NM").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
+            	board.setBOARD_TXT(rs.getString("BOARD_TXT").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
+            	board.setBOARD_DT(rs.getString("BOARD_DT").substring(0, 11) + rs.getString("BOARD_DT").substring(11, 13) + "시" + rs.getString("BOARD_DT").substring(14, 16) + "분");
+            	board.setBOARDHIT(rs.getInt("BOARDHIT"));
+            	board.setBOARD_FILE(rs.getString("BOARD_FILE"));
+            	board.setBOARD_RFILE(rs.getString("BOARD_RFILE"));
+            	board.setBOARD_GROUP(rs.getInt("BOARD_GROUP"));
+            	board.setBOARD_SEQUENCE(rs.getInt("BOARD_SEQUENCE"));
+            	board.setBOARD_LEVEL(rs.getInt("BOARD_LEVEL"));
+            	board.setBOARD_AVAILABLE(rs.getInt("BOARD_AVAILABLE"));
+            	searchList.add(board);
+        	}            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        	try {
+        		if (rs != null) rs.close();
+        		if (pstmt != null) pstmt.close();
+        		if (conn != null) conn.close();
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}       	
+        }
+        return searchList;     
+	}
     
 }

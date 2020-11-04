@@ -167,34 +167,4 @@ public class StfDAO {
         }
         return -1;      // DB 오류       
 	}
-    
-    public String getProfile(String STF_ID) {
-    	Connection conn = null;
-    	PreparedStatement pstmt = null;
-    	ResultSet rs = null;
-        String SQL = "SELECT userProfile FROM STF WHERE STF_ID = ?";
-        try {
-        	conn = dataSource.getConnection();
-            pstmt = conn.prepareStatement(SQL);
-            pstmt.setString(1, STF_ID);
-            rs = pstmt.executeQuery(); // 실행 결과를 넣음
-            if (rs.next()) {     // 결과가 존재하면
-            	if (rs.getString("userProfile").equals("")) {
-            		return "http://localhost:8080/DS4U/images/1.jpg";
-            	}
-            	return "http://localhost:8080/DS4U/upload/" + rs.getString("userProfile");
-        	}
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-        	try {
-        		if (rs != null) rs.close();
-        		if (pstmt != null) pstmt.close();
-        		if (conn != null) conn.close();
-        	} catch (Exception e) {
-        		e.printStackTrace();
-        	}       	
-        }
-        return "http://localhost:8080/DS4U/images/1.jpg";     // DB 오류       
-	}
 }

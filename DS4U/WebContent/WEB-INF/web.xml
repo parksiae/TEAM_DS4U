@@ -72,5 +72,13 @@
   <servlet-mapping>
   	<servlet-name>BoardReplyServlet</servlet-name>
   	<url-pattern>/boardReply</url-pattern>
-  </servlet-mapping>               
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>ApvWriteServlet</servlet-name>
+  	<servlet-class>apv.ApvWriteServlet</servlet-class>
+  </servlet>  
+  <servlet-mapping>
+  	<servlet-name>ApvWriteServlet</servlet-name>
+  	<url-pattern>/apvWrite</url-pattern>
+  </servlet-mapping>                 
 </web-app>

@@ -57,6 +57,7 @@
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li><a href="index.jsp">메인</a></li>
                 <li class="active"><a href="boardView.jsp">게시판</a></li>
+            	<li><a href="apvView.jsp">정보화사업</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -69,7 +70,11 @@
                         <li><a href="logoutAction.jsp">로그아웃</a></li>                  
                     </ul>
                 </li>
-            </ul>            
+            </ul>
+        <form action="./index.jsp" method="get" class="form-inline my-2 my-lg-0">
+			<input type="text" name="search" class="form-control mr-sm-2" type="search" placeholder="내용을 입력하세요." aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+		</form>            
        	</div> 
 	</nav>
 	<div class="container">

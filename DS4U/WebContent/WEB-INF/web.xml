@@ -81,4 +81,12 @@
   	<servlet-name>ApvWriteServlet</servlet-name>
   	<url-pattern>/apvWrite</url-pattern>
   </servlet-mapping>                 
+  <servlet>
+  	<servlet-name>ReqWriteServlet</servlet-name>
+  	<servlet-class>req.ReqWriteServlet</servlet-class>
+  </servlet>  
+  <servlet-mapping>
+  	<servlet-name>ReqWriteServlet</servlet-name>
+  	<url-pattern>/reqWrite</url-pattern>
+  </servlet-mapping>
 </web-app>

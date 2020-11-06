@@ -59,7 +59,8 @@
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li><a href="index.jsp">메인</a></li>
                 <li class="active"><a href="boardView.jsp">게시판</a></li>
-                <li><a href="apvView.jsp">정보화사업</a></li>
+                <li><a href="apvView.jsp">정보화 사업</a></li>
+                <li><a href="reqView.jsp">보안성 검토</a></li>
             </ul>
             
 			<%

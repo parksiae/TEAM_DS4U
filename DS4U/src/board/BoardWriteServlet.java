@@ -29,6 +29,8 @@ public class BoardWriteServlet extends HttpServlet {
 		}
 		String STF_ID = multi.getParameter("STF_ID");
 		HttpSession session = request.getSession();
+		System.out.println(STF_ID);
+		System.out.println(session.getAttribute("STF_ID"));
 		if (!STF_ID.equals((String) session.getAttribute("STF_ID"))) {
 			session.setAttribute("messageType", "오류 메시지");
 			session.setAttribute("messageContent", "접근할 수 없습니다.");

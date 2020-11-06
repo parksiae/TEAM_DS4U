@@ -1,0 +1,46 @@
+[TABLE] STF - 사원 정보
+
+create table stf(
+    STF_ID varchar(10) not null,
+    STF_PW varchar(20),
+    STF_NM varchar(30),
+    STF_PH varchar(13),
+    STF_EML varchar(30),
+    STF_DEP varchar(20),
+    primary key(STF_ID));
+
+[TABLE] BOARD - 게시판
+
+create table board(
+    STF_ID varchar(10),
+    BOARD_SQ int,
+    BOARD_NM varchar(64),
+    BOARD_TXT varchar(255),
+    BOARD_DT datetime,
+    BOARDHIT int,
+    BOARD_FILE varchar(100),
+    BOARD_RFILE varchar(100),
+    BOARD_GROUP int,
+    BOARD_SEQUENCE int,
+    BOARD_LEVEL int,
+    BOARD_AVAILABLE int,
+    primary key(BOARD_SQ));
+
+[TABLE] APV - 정보화 사업
+
+CREATE TABLE APV(
+   APV_SQ int,  
+   STF_ID VARCHAR(20), 
+   APV_NM VARCHAR(64),
+   APV_DATE VARCHAR(255),
+   APV_STT_DATE VARCHAR(64),
+   APV_FIN_DATE VARCHAR(64),
+   APV_BUDGET VARCHAR(64),   
+   APV_COM VARCHAR(10),
+   APV_PHONE VARCHAR(30),
+   APV_POLICY_SQ VARCHAR(30),
+   APV_FILE VARCHAR(100),
+   APV_RFILE VARCHAR(100),
+   primary key (APV_SQ)
+);
+

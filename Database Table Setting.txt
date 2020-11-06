@@ -27,7 +27,6 @@ create table board(
     primary key(BOARD_SQ));
 
 [TABLE] APV - 정보화 사업
-
 CREATE TABLE APV(
    APV_SQ int,  
    STF_ID VARCHAR(20), 
@@ -41,6 +40,7 @@ CREATE TABLE APV(
    APV_POLICY_SQ VARCHAR(30),
    APV_FILE VARCHAR(100),
    APV_RFILE VARCHAR(100),
+   APV_GROUP INT,
+   APV_SEQUENCE INT,
    primary key (APV_SQ)
 );
-

@@ -28,8 +28,8 @@ create table board(
 
 [TABLE] APV - 정보화 사업
 CREATE TABLE APV(
-   APV_SQ int,  
-   STF_ID VARCHAR(20), 
+   STF_ID VARCHAR(20),
+   APV_SQ int,   
    APV_NM VARCHAR(64),
    APV_DATE VARCHAR(255),
    APV_STT_DATE VARCHAR(64),

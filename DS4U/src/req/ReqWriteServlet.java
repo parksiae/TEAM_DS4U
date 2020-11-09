@@ -49,12 +49,12 @@ public class ReqWriteServlet extends HttpServlet {
 			response.sendRedirect("reqWrite.jsp");
 			return;	
 		}
-		String REQ_DATE = "";
+		
 		String REQ_REC_DATE = "";
 		String REQ_SUB_DATE = "";
 		
 		ReqDAO reqDAO = new ReqDAO();
-		reqDAO.write(STF_ID, APV_NM, APV_OBJ, APV_CONT, APV_DATE, REQ_DATE, REQ_REC_DATE, REQ_SUB_DATE);
+		reqDAO.write(STF_ID, APV_NM, APV_OBJ, APV_CONT, APV_DATE,  REQ_REC_DATE, REQ_SUB_DATE);
 		request.getSession().setAttribute("messageType", "성공 메세지");
 		request.getSession().setAttribute("messageContent", "성공적으로 게시물을 작성하였습니다.");
 		response.sendRedirect("reqView.jsp");

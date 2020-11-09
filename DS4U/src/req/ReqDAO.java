@@ -25,10 +25,10 @@ public class ReqDAO {
 	}
 	
     public int write(String STF_ID, String APV_NM, String APV_OBJ, String APV_CONT, 
-    		String APV_DATE, String REQ_DATE, String REQ_REC_DATE, String REQ_SUB_DATE) {
+    		String APV_DATE, String REQ_REC_DATE, String REQ_SUB_DATE) {
     	Connection conn = null;
     	PreparedStatement pstmt = null;
-        String SQL = "INSERT INTO REQ SELECT ?, IFNULL((SELECT MAX(REQ_SQ) + 1 FROM REQ), 1), ?, ?, ?, ?, ?, ?, ?, IFNULL((SELECT MAX(REQ_GROUP) + 1 FROM REQ), 0), 0";
+        String SQL = "INSERT INTO REQ SELECT ?, IFNULL((SELECT MAX(REQ_SQ) + 1 FROM REQ), 1), ?, ?, ?, ?, now(), ?, ?, IFNULL((SELECT MAX(REQ_GROUP) + 1 FROM REQ), 0), 0";
         try {
         	conn = dataSource.getConnection();
             pstmt = conn.prepareStatement(SQL);
@@ -37,10 +37,9 @@ public class ReqDAO {
             pstmt.setString(3, APV_OBJ);
             pstmt.setString(4, APV_CONT);
             pstmt.setString(5, APV_DATE);
-            pstmt.setString(6, REQ_DATE);
             //pstmt.setString(7, APV_COM);
-            pstmt.setString(7, REQ_REC_DATE);
-            pstmt.setString(8, REQ_SUB_DATE);
+            pstmt.setString(6, REQ_REC_DATE);
+            pstmt.setString(7, REQ_SUB_DATE);
             return pstmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +72,7 @@ public class ReqDAO {
             	req.setAPV_OBJ(rs.getString("APV_OBJ").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setAPV_CONT(rs.getString("APV_CONT").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setAPV_DATE(rs.getString("APV_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
-            	req.setREQ_DATE(rs.getString("REQ_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
+            	req.setREQ_DATE(rs.getString("REQ_DATE").substring(0, 11) + rs.getString("REQ_DATE").substring(11, 13) + "시" + rs.getString("REQ_DATE").substring(14, 16) + "분");
             	req.setREQ_REC_DATE(rs.getString("REQ_REC_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setREQ_SUB_DATE(rs.getString("REQ_SUB_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setREQ_GROUP(rs.getInt("REQ_GROUP"));
@@ -114,7 +113,7 @@ public class ReqDAO {
             	req.setAPV_OBJ(rs.getString("APV_OBJ").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setAPV_CONT(rs.getString("APV_CONT").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setAPV_DATE(rs.getString("APV_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
-            	req.setREQ_DATE(rs.getString("REQ_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
+            	req.setREQ_DATE(rs.getString("REQ_DATE").substring(0, 11) + rs.getString("REQ_DATE").substring(11, 13) + "시" + rs.getString("REQ_DATE").substring(14, 16) + "분");
             	req.setREQ_REC_DATE(rs.getString("REQ_REC_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setREQ_SUB_DATE(rs.getString("REQ_SUB_DATE").replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>"));
             	req.setREQ_GROUP(rs.getInt("REQ_GROUP"));

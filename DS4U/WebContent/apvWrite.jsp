@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="stf.StfDTO" %>
 <%@ page import="stf.StfDAO" %>
 <!DOCTYPE html>
@@ -9,8 +9,8 @@
 		STF_ID = (String) session.getAttribute("STF_ID");
 	}
 	if (STF_ID == null) {
-		session.setAttribute("messageType", "¿À·ù ¸Þ½ÃÁö");
-		session.setAttribute("messageContent", "·Î±×ÀÎÀÌ ÇÊ¿äÇÕ´Ï´Ù.");
+		session.setAttribute("messageType", "ì˜¤ë¥˜ ë©”ì‹œì§€");
+		session.setAttribute("messageContent", "ë¡œê·¸ì¸ì´ í•„ìš”í•©ë‹ˆë‹¤.");
 		response.sendRedirect("index.jsp");
 		return;		
 	}
@@ -19,36 +19,36 @@
 %>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">  <!-- ¹ÝÀÀÇü À¥¿¡ »ç¿ëÇÏ´Â ¸ÞÅ¸ÅÂ±× -->
-       <!-- viewport = È­¸é Ç¥½Ã¿µ¿ª, content = ¸ð¹ÙÀÏ¿¡ ¸Â°Ô Å©±â Á¶Á¤, initial = ÃÊ±âÈ­¸é ¹èÀ², shrink-to-fit=no = ÁÙÀÓ¹æÁö -->
-	<link rel="stylesheet" href="css/bootstrap.css"> <!-- ½ºÅ¸ÀÏ½ÃÆ® bootstrap.css ÂüÁ¶ -->
-	<link rel="stylesheet" href="css/custom.css"> <!-- ÂüÁ¶  -->
-	<title>¼­¿ï±³Åë°ø»ç</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">  <!-- ë°˜ì‘í˜• ì›¹ì— ì‚¬ìš©í•˜ëŠ” ë©”íƒ€íƒœê·¸ -->
+       <!-- viewport = í™”ë©´ í‘œì‹œì˜ì—­, content = ëª¨ë°”ì¼ì— ë§žê²Œ í¬ê¸° ì¡°ì •, initial = ì´ˆê¸°í™”ë©´ ë°°ìœ¨, shrink-to-fit=no = ì¤„ìž„ë°©ì§€ -->
+	<link rel="stylesheet" href="css/bootstrap.css"> <!-- ìŠ¤íƒ€ì¼ì‹œíŠ¸ bootstrap.css ì°¸ì¡° -->
+	<link rel="stylesheet" href="css/custom.css"> <!-- ì°¸ì¡°  -->
+	<title>ì„œìš¸êµí†µê³µì‚¬</title>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<!-- <script type="text/javascript"> --> 
 	<!-- 
 		function removeCheck() {
-			 if (confirm("Ãë¼ÒÇÏ½Ã°Ú½À´Ï±î?") == true){    //È®ÀÎ
+			 if (confirm("ì·¨ì†Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?") == true){    //í™•ì¸
 
 				 window.open('', '_self', '');
 
 				 window.close();
 
-			 }else{   //Ãë¼Ò
+			 }else{   //ì·¨ì†Œ
 
 			     return false;
 
 			 }
 		}
 		function registerCheck() {
-			 if (confirm("µî·ÏÇÏ½Ã°Ú½À´Ï±î?") == true){    //È®ÀÎ
+			 if (confirm("ë“±ë¡í•˜ì‹œê² ìŠµë‹ˆê¹Œ?") == true){    //í™•ì¸
 
 				 window.open('', '_self', '');
 
 				 window.close();
 
-			 }else{   //Ãë¼Ò
+			 }else{   //ì·¨ì†Œ
 
 			     return false;
 
@@ -56,7 +56,7 @@
 		} 
 		
 	</script>-->
-    <!--  <title>Á¤º¸È­»ç¾÷ µî·Ï</title>
+    <!--  <title>ì •ë³´í™”ì‚¬ì—… ë“±ë¡</title>
     
     <style>
         #wrap{
@@ -80,110 +80,110 @@
     </style>-->
 </head>
 <body>
-    <nav class ="navbar navbar-default">   <!-- navbar-»ö»ó -->
-        <div class="navbar-header">   <!-- È¨ÆäÀÌÁö ·Î°í -->
+    <nav class ="navbar navbar-default">   <!-- navbar-ìƒ‰ìƒ -->
+        <div class="navbar-header">   <!-- í™ˆíŽ˜ì´ì§€ ë¡œê³  -->
             <button type="button" class="navbar-toggle collapsed"
                 data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
                 aria-expand="false">
-				<!-- class="navbar-toggle collapsed" : ³×ºñ°ÔÀÌ¼Ç È­¸é Ãâ·ÂÀ¯¹«-->
-				<!-- data-toggle="collapse" : ¸ð¹ÙÀÏ¿¡¼­ Å¬¸¯ ½Ã ¸Þ´º ³ª¿È -->				
-                <span class ="icon-bar"></span> <!-- ÁÙ¿´À»¶§ ¿·¿¡ Â¦´ë±â -->
-                <span class ="icon-bar"></span> <!-- ¾ÆÀÌÄÜ ÀÌ¹ÌÁö -->
+				<!-- class="navbar-toggle collapsed" : ë„¤ë¹„ê²Œì´ì…˜ í™”ë©´ ì¶œë ¥ìœ ë¬´-->
+				<!-- data-toggle="collapse" : ëª¨ë°”ì¼ì—ì„œ í´ë¦­ ì‹œ ë©”ë‰´ ë‚˜ì˜´ -->				
+                <span class ="icon-bar"></span> <!-- ì¤„ì˜€ì„ë•Œ ì˜†ì— ì§ëŒ€ê¸° -->
+                <span class ="icon-bar"></span> <!-- ì•„ì´ì½˜ ì´ë¯¸ì§€ -->
                 <span class ="icon-bar"></span>
             </button>
 			<a class="navbar-brand" href="index.jsp"><img alt="Brand" src="images/logo.jpg"></a>	
-            	<!-- bootstrap navbar ±âº» ¸Þ´º¹Ù -->
+            	<!-- bootstrap navbar ê¸°ë³¸ ë©”ë‰´ë°” -->
                                
         </div>        
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">       <!-- navbar-nav : ³×ºñ°ÔÀÌ¼Ç ¹Ù ¸Þ´º -->
-                <li><a href="index.jsp">¸ÞÀÎ</a></li>
-                <li><a href="boardView.jsp">°Ô½ÃÆÇ</a></li>
-            	<li class="active"><a href="apvView.jsp">Á¤º¸È­ »ç¾÷</a></li>
-                <li><a href="reqView.jsp">º¸¾È¼º °ËÅä</a></li>
+            <ul class="nav navbar-nav">       <!-- navbar-nav : ë„¤ë¹„ê²Œì´ì…˜ ë°” ë©”ë‰´ -->
+                <li><a href="index.jsp">ë©”ì¸</a></li>
+                <li><a href="boardView.jsp">ê²Œì‹œíŒ</a></li>
+            	<li class="active"><a href="apvView.jsp">ì •ë³´í™” ì‚¬ì—…</a></li>
+                <li><a href="reqView.jsp">ë³´ì•ˆì„± ê²€í† </a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                 	<a href="#" class = "dropdown-toggle"
                     	data-toggle="dropdown" role ="button" aria-haspopup="true"
-                    	aria-expanded="false">È¸¿ø°ü¸®<span class="caret"></span>
+                    	aria-expanded="false">íšŒì›ê´€ë¦¬<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                    	<li><a href="update.jsp">È¸¿øÁ¤º¸¼öÁ¤</a></li> 
-                        <li><a href="logoutAction.jsp">·Î±×¾Æ¿ô</a></li>                  
+                    	<li><a href="update.jsp">íšŒì›ì •ë³´ìˆ˜ì •</a></li> 
+                        <li><a href="logoutAction.jsp">ë¡œê·¸ì•„ì›ƒ</a></li>                  
                     </ul>
                 </li>
             </ul>
         <form action="./index.jsp" method="get" class="form-inline my-2 my-lg-0">
-			<input type="text" name="search" class="form-control mr-sm-2" type="search" placeholder="³»¿ëÀ» ÀÔ·ÂÇÏ¼¼¿ä." aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">°Ë»ö</button>
+			<input type="text" name="search" class="form-control mr-sm-2" type="search" placeholder="ë‚´ìš©ì„ ìž…ë ¥í•˜ì„¸ìš”." aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">ê²€ìƒ‰</button>
 		</form>            
        	</div>
     </nav> 
-    <!-- ¿ÞÂÊ, ¿À¸¥ÂÊ ¹Ù±ù¿©¹éÀ» auto·Î ÁÖ¸é Áß¾ÓÁ¤·ÄµÈ´Ù.  -->
+    <!-- ì™¼ìª½, ì˜¤ë¥¸ìª½ ë°”ê¹¥ì—¬ë°±ì„ autoë¡œ ì£¼ë©´ ì¤‘ì•™ì •ë ¬ëœë‹¤.  -->
     <div class="container">
 		<form method="post" action="./apvWrite" enctype="multipart/form-data">
 			<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
-						<th colspan="3"><h4>Á¤º¸È­»ç¾÷ µî·Ï</h4></th>
+						<th colspan="3"><h4>ì •ë³´í™”ì‚¬ì—… ë“±ë¡</h4></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td style="width: 130px; text-align: left;"><h5>1. »ç¾÷¸í</h5></td>
-						<td><input class="form-control" type="text" id="APV_NM" name="APV_NM" maxlength="64" placeholder="»ç¾÷¸íÀ» ÀÔ·ÂÇÏ¼¼¿ä."></td>
+						<td style="width: 130px; text-align: left;"><h5>1. ì‚¬ì—…ëª…</h5></td>
+						<td><input class="form-control" type="text" id="APV_NM" name="APV_NM" maxlength="64" placeholder="ì‚¬ì—…ëª…ì„ ìž…ë ¥í•˜ì„¸ìš”."></td>
 					</tr>
 					<tr>
-						<td style="width: 130px; text-align: left;"><h5>2. »ç¾÷ ±â°£</h5></td>
-						<td><input class="form-control" type="text" id="APV_DATE" name="APV_DATE" maxlength="64" placeholder="»ç¾÷±â°£À» ÀÔ·ÂÇÏ¼¼¿ä."></td>				
+						<td style="width: 130px; text-align: left;"><h5>2. ì‚¬ì—… ê¸°ê°„</h5></td>
+						<td><input class="form-control" type="text" id="APV_DATE" name="APV_DATE" maxlength="64" placeholder="ì‚¬ì—…ê¸°ê°„ì„ ìž…ë ¥í•˜ì„¸ìš”."></td>				
 					</tr>		
 					<tr>
-						<td style="width: 130px; text-align: left;"><h5>3. »ç¾÷ ½ÃÀÛÀÏ</h5></td>
-						<td colspan="2"><input class="form-control" id="APV_STT_DATE" type="text" name="APV_STT_DATE" maxlength="10" placeholder="»ç¾÷ ½ÃÀÛÀÏÀ» ÀÔ·ÂÇÏ¼¼¿ä."></td>				
+						<td style="width: 130px; text-align: left;"><h5>3. ì‚¬ì—… ì‹œìž‘ì¼</h5></td>
+						<td colspan="2"><input class="form-control" id="APV_STT_DATE" type="text" name="APV_STT_DATE" maxlength="10" placeholder="ì‚¬ì—… ì‹œìž‘ì¼ì„ ìž…ë ¥í•˜ì„¸ìš”."></td>				
 					</tr>
 					<tr>
-						<td style="width: 130px; text-align: left;"><h5>4. »ç¾÷ Á¾·áÀÏ</h5></td>
-						<td colspan="2"><input class="form-control" id="APV_FIN_DATE" type="text" name="APV_FIN_DATE" maxlength="10" placeholder="»ç¾÷ Á¾·áÀÏÀ» ÀÔ·ÂÇÏ¼¼¿ä."></td>				
+						<td style="width: 130px; text-align: left;"><h5>4. ì‚¬ì—… ì¢…ë£Œì¼</h5></td>
+						<td colspan="2"><input class="form-control" id="APV_FIN_DATE" type="text" name="APV_FIN_DATE" maxlength="10" placeholder="ì‚¬ì—… ì¢…ë£Œì¼ì„ ìž…ë ¥í•˜ì„¸ìš”."></td>				
 					</tr>
 					<tr>
-						<td style="width: 130px; text-align: left;"><h5>5. ¼Ò¿ä ¿¹»ê</h5></td>
-						<td colspan="2"><input class="form-control" id="APV_BUDGET" type="text" name="APV_BUDGET" maxlength="15" placeholder="¼Ò¿ä ¿¹»ê(¿ø)À» ÀÔ·ÂÇÏ¼¼¿ä."></td>				
+						<td style="width: 130px; text-align: left;"><h5>5. ì†Œìš” ì˜ˆì‚°</h5></td>
+						<td colspan="2"><input class="form-control" id="APV_BUDGET" type="text" name="APV_BUDGET" maxlength="15" placeholder="ì†Œìš” ì˜ˆì‚°(ì›)ì„ ìž…ë ¥í•˜ì„¸ìš”."></td>				
 					</tr>
 					<tr>
-						<td style="width: 130px;"><h5>6. ¾ÆÀÌµð</h5></td>
+						<td style="width: 130px;"><h5>6. ì•„ì´ë””</h5></td>
 						<td><h5><%= stf.getSTF_ID() %></h5>
 						<input type="hidden" name="STF_ID" value="<%= stf.getSTF_ID() %>"></td>						
 					</tr>
 					<tr>
-						<td style="width: 130px; text-align: left;"><h5>7. ¿¬¶ôÃ³</h5></td>						
-						<td colspan="2"><input class="form-control" id="APV_PHONE" type="text" name="APV_PHONE" maxlength="30" placeholder="¿¬¶ôÃ³¸¦ ÀÔ·ÂÇÏ¼¼¿ä."></td>							
+						<td style="width: 130px; text-align: left;"><h5>7. ì—°ë½ì²˜</h5></td>						
+						<td colspan="2"><input class="form-control" id="APV_PHONE" type="text" name="APV_PHONE" maxlength="30" placeholder="ì—°ë½ì²˜ë¥¼ ìž…ë ¥í•˜ì„¸ìš”."></td>							
 					</tr>
 					<tr>
-						<td style="width: 130px; text-align: left;"><h5>8. »ç¾÷¹æÄ§¹øÈ£</h5></td>						
-						<td colspan="2"><input class="form-control" id="APV_POLICY_SQ" type="text" name="APV_POLICY_SQ" maxlength="30" placeholder="»ç¾÷¹æÄ§¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä."></td>							
+						<td style="width: 130px; text-align: left;"><h5>8. ì‚¬ì—…ë°©ì¹¨ë²ˆí˜¸</h5></td>						
+						<td colspan="2"><input class="form-control" id="APV_POLICY_SQ" type="text" name="APV_POLICY_SQ" maxlength="30" placeholder="ì‚¬ì—…ë°©ì¹¨ë²ˆí˜¸ë¥¼ ìž…ë ¥í•˜ì„¸ìš”."></td>							
 					</tr>
 					<tr>
-						<td style="width: 110px;"><h5>ÆÄÀÏ ¾÷·Îµå</h5></td>
+						<td style="width: 110px;"><h5>íŒŒì¼ ì—…ë¡œë“œ</h5></td>
 						<td colspan="2">
 							<input type="file" name="APV_FILE" class="file">
 							<div class="input-group	col-xs-12">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-								<input type="text" class="form-control input-lg" disabled placeholder="»ç¾÷¹æÄ§ Ã·ºÎÆÄÀÏ">
+								<input type="text" class="form-control input-lg" disabled placeholder="ì‚¬ì—…ë°©ì¹¨ ì²¨ë¶€íŒŒì¼">
 								<span class="input-group-btn">
-									<button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i>ÆÄÀÏÃ£±â</button>
+									<button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i>íŒŒì¼ì°¾ê¸°</button>
 								</span>
 							</div>
 						</td>				
 					</tr>		
 
 					<tr>
-						<td style="text-align: left;" colspan="3"><h5 style="color: red;"></h5><input class="btn btn-primary pull-right" type="submit" value="µî·Ï"></td>
+						<td style="text-align: left;" colspan="3"><h5 style="color: red;"></h5><input class="btn btn-primary pull-right" type="submit" value="ë“±ë¡"></td>
 					</tr>																														
 				</tbody>
 			</table>
-			<!-- <input class="btn btn-primary pull-right" type="button" value="Ãë¼Ò" onclick="removeCheck()"> -->
-			<!--<input class="btn btn-primary pull-right" type="submit" value="µî·Ï" onclick="registerCheck()"> -->			
+			<!-- <input class="btn btn-primary pull-right" type="button" value="ì·¨ì†Œ" onclick="removeCheck()"> -->
+			<!--<input class="btn btn-primary pull-right" type="submit" value="ë“±ë¡" onclick="registerCheck()"> -->			
 		</form>
 	</div>
 	
@@ -201,7 +201,7 @@
 	<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="vertical-alignment-helper">
 			<div class="modal-dialog vertical-align-center">
-				<div class="modal-content <% if(messageType.equals("¿À·ù ¸Þ½ÃÁö")) out.println("panel-warning"); else out.println("panel-success");%>">
+				<div class="modal-content <% if(messageType.equals("ì˜¤ë¥˜ ë©”ì‹œì§€")) out.println("panel-warning"); else out.println("panel-success");%>">
 					<div class="modal-header panel-heading">
 						<button type="button" class="close" data-dismiss="modal">
 							<span aria-hidden="true">&times</span>
@@ -215,7 +215,7 @@
 						<%= messageContent %>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">È®ÀÎ</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">í™•ì¸</button>
 					</div>
 				</div>
 			</div>

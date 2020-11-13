@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="board.BoardDAO" %>
-<%@ page import="board.BoardDTO" %>
+<%@ page import="apv.ApvDAO" %>
+<%@ page import="apv.ApvDTO" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <%
@@ -14,25 +15,19 @@
 		response.sendRedirect("index.jsp");
 		return;	
 	}
-	String BOARD_SQ = null;
-	if (request.getParameter("BOARD_SQ") != null) {
-		BOARD_SQ = (String) request.getParameter("BOARD_SQ");
+	String pageNumber = "1";
+	if (request.getParameter("pageNumber") != null) {
+		pageNumber = request.getParameter("pageNumber");
 	}
-	if (BOARD_SQ == null || BOARD_SQ.equals("")) {
+	try {
+		Integer.parseInt(pageNumber);
+	} catch (Exception e) {
 		session.setAttribute("messageType", "오류 메시지");
-		session.setAttribute("messageContent", "게시물을 선택해주세요.");
-		response.sendRedirect("index.jsp");
-		return;	
+		session.setAttribute("messageContent", "페이지 번호가 잘못되었습니다.");
+		response.sendRedirect("apvView.jsp");
+		return;			
 	}
-	BoardDAO boardDAO = new BoardDAO();
-	BoardDTO board = boardDAO.getBoard(BOARD_SQ);
-	if (board.getBOARD_AVAILABLE() == 0) {
-		session.setAttribute("messageType", "오류 메시지");
-		session.setAttribute("messageContent", "삭제된 게시물입니다.");
-		response.sendRedirect("boardView.jsp");
-		return;	
-	}
-	boardDAO.hit(BOARD_SQ);
+	ArrayList<ApvDTO> apvList = new ApvDAO().getList(pageNumber);
 %>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -63,8 +58,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li><a href="index.jsp">메인</a></li>
-                <li class="active"><a href="boardView.jsp">게시판</a></li>
-                <li><a href="apvView.jsp">정보화 사업</a></li>
+                <li><a href="boardView.jsp">게시판</a></li>
+                <li class="active"><a href="apvView.jsp">정보화 사업</a></li>
                 <li><a href="reqView.jsp">보안성 검토</a></li>
             </ul>
             
@@ -115,44 +110,103 @@
 		<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd">
 			<thead>
 				<tr>
-					<th colspan="4"><h4>게시판 보기</h4></th>
+					<th colspan="9"><h4>정보화사업</h4></th>
 				</tr>
 				<tr>
-					<td style="background-color: #fafafa; color: #000000; width: 80px;"><h5>제목</h5></td>
-					<td colspan="3"><h5><%= board.getBOARD_NM() %></h5></td>
-				</tr>
-				<tr>
-					<td style="background-color: #fafafa; color: #000000; width: 80px;"><h5>작성자</h5></td>
-					<td colspan="3"><h5><%= board.getSTF_ID() %></h5></td>
-				</tr>
-				<tr>
-					<td style="background-color: #fafafa; color: #000000; width: 80px;"><h5>작성날짜</h5></td>
-					<td><h5><%= board.getBOARD_DT() %></h5></td>
-					<td style="background-color: #fafafa; color: #000000; width: 80px;"><h5>조회수</h5></td>
-					<td><h5><%= board.getBOARDHIT() + 1 %></h5></td>
-				</tr>
-				<tr>
-					<td style="vertical-align: middle; min-height: 150px; background-color: #fafafa; color: #000000; width: 80px;"><h5>글 내용</h5></td>
-					<td colspan="3" style="text-align: left;"><h5><%= board.getBOARD_TXT() %></h5></td>
-				</tr>
-				<tr>
-					<td style="background-color: #fafafa; color: #000000; width: 80px;"><h5>첨부파일</h5></td>
-					<td colspan="3"><h5><a href="boardDownload.jsp?BOARD_SQ=<%= board.getBOARD_SQ() %>"><%= board.getBOARD_FILE() %></h5></td>
+					<th style="background-color: #fafafa; color: #000000;"><h5>번호</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>사업명</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>사업 기간</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>사업 시작일</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>사업 종료일</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>소요 예산</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>사업 담당자</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>연락처</h5></th>
+					<th style="background-color: #fafafa; color: #000000;"><h5>사업방침번호</h5></th>
 				</tr>
 			</thead>
 			<tbody>
+			<%
+				for (int i=0; i<apvList.size(); i++) {
+					ApvDTO apv = apvList.get(i);
+			%>
+			<tr>
+					<td><%= apv.getAPV_SQ() %></td>
+					<td style="text-align: left;">
+					<a href="apvShow.jsp?APV_SQ=<%= apv.getAPV_SQ() %>">
+					<%= apv.getAPV_NM() %>
+					</a>
+					<td><%= apv.getAPV_DATE() %></td>
+					<td><%= apv.getAPV_STT_DATE() %></td>
+					<td><%= apv.getAPV_FIN_DATE() %></td>
+					<td><%= apv.getAPV_BUDGET() %></td>
+					<td><%= apv.getSTF_ID() %></td>
+					<td><%= apv.getAPV_PHONE() %></td>
+					<td><%= apv.getAPV_POLICY_SQ() %></td>
+
+				</tr>
+			<%
+				}
+			%>
+			<div class="search-form margin-top first align-right">
+				<h3 class="hidden">공지사항 검색폼</h3>
+				<form class="table-form">
+					<fieldset>
+						<legend class="hidden">공지사항 검색 필드</legend>
+						<label class="hidden">검색분류</label>
+						<select name="f">
+							<option  value="title">제목</option>
+							<option  value="writerId">작성자</option>
+						</select> 
+						<label class="hidden">검색어</label>
+						<input type="text" name="q" value=""/>
+						<input class="btn btn-search" type="submit" value="검색" />
+					</fieldset>
+				</form>
+			</div>
 				<tr>
-					<td colspan="5" style="text-align : right;">
-						<a href="boardView.jsp" class="btn btn-primary">목록</a>
-						<a href="boardReply.jsp?BOARD_SQ=<%= board.getBOARD_SQ() %>" class="btn btn-primary">답변</a>
-						<%
-							if (STF_ID.equals(board.getSTF_ID())) {								
-						%>
-							<a href="boardUpdate.jsp?BOARD_SQ=<%= board.getBOARD_SQ() %>" class="btn btn-primary">수정</a>
-							<a href="boardDelete?BOARD_SQ=<%= board.getBOARD_SQ() %>" class="btn btn-primary" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</a>
-						<%		
+					<td colspan="9">
+						<a href="apvWrite.jsp" class="btn btn-primary pull-right" type="submit">글쓰기</a>
+						<ul class="pagination" style="margin: 0 auto;">
+					<% 
+						int startPage = (Integer.parseInt(pageNumber) / 10) * 10 + 1;
+						if (Integer.parseInt(pageNumber) % 10 == 0) startPage -= 10;
+						int targetPage = new ApvDAO().targetPage(pageNumber);
+						if (startPage != 1) {
+					%>
+						<li><a href="apvView.jsp?pageNumber=<%= startPage - 1 %>"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+					<%
+						} else {
+					%>
+						<li><span class="glyphicon glyphicon-chevron-left" style="color: gray;"></span></li>
+					<%
+						}
+						for (int i=startPage; i<Integer.parseInt(pageNumber); i++) {
+					%>
+						<li><a href="apvView.jsp?pageNumber=<%= i %>"><%= i %></a></li>
+					<%
+						}
+					%>
+						<li class="active"><a href="apvView.jsp?pageNumber=<%= pageNumber %>"><%= pageNumber %></a></li>	
+					<%
+						for (int i=Integer.parseInt(pageNumber) + 1; i<=targetPage + Integer.parseInt(pageNumber); i++) {
+							if (i < startPage + 10) {
+					%>
+						<li><a href="apvView.jsp?pageNumber=<%= i %>"><%= i %></a></li>
+					<%
 							}
-						%>
+						}
+						if (targetPage + Integer.parseInt(pageNumber) > startPage + 9) {
+					%>
+						<li><a href="apvView.jsp?pageNumber=<%= startPage + 10 %>"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+					<%
+						} else {
+					%>
+						<li><span class="glyphicon glyphicon-chevron-right" style="color: gray;"></span></li>
+					<%
+						}
+					%>	
+						
+						</ul>
 					</td>
 				</tr>			
 			</tbody>

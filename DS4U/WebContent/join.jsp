@@ -72,6 +72,8 @@
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li><a href="index.jsp">메인</a></li>
                 <li><a href="boardView.jsp">게시판</a></li>
+                <li><a href="apvView.jsp">정보화 사업</a></li>
+                <li><a href="reqView.jsp">보안성 검토</a></li>
             </ul>
 			<%
             // 접속하기는 로그인이 되어있지 않은 경우만 나오게한다
@@ -94,6 +96,10 @@
             <%
                 }
             %>
+        <form action="./index.jsp" method="get" class="form-inline my-2 my-lg-0">
+			<input type="text" name="search" class="form-control mr-sm-2" type="search" placeholder="내용을 입력하세요." aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+		</form>  
        	</div>
 	</nav>
 	<div class="container">

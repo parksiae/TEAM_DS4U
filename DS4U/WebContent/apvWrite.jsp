@@ -14,17 +14,8 @@
 		response.sendRedirect("index.jsp");
 		return;		
 	}
+	
 	StfDTO stf = new StfDAO().getUser(STF_ID);
-	String BOARD_SQ = null;
-	if (request.getParameter("BOARD_SQ") != null) {
-		BOARD_SQ = (String) request.getParameter("BOARD_SQ");
-	}
-	if (BOARD_SQ == null || BOARD_SQ.equals("")) {
-		session.setAttribute("messageType", "오류 메시지");
-		session.setAttribute("messageContent", "게시물을 선택해주세요.");
-		response.sendRedirect("index.jsp");
-		return;	
-	}
 %>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,17 +26,58 @@
 	<title>서울교통공사</title>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
-	<script type="text/javascript">
-		function passwordCheckFunction() {
-			var STF_PW1 = $('#STF_PW1').val();
-			var STF_PW2 = $('#STF_PW2').val();
-			if (STF_PW1 != STF_PW2) {
-				$('#passwordCheckMessage').html('비밀번호가 서로 다릅니다.');
-			} else {
-				$('#passwordCheckMessage').html('비밀번호 확인이 완료되었습니다.');
-			}
-		}	
-	</script>
+	<!-- <script type="text/javascript"> --> 
+	<!-- 
+		function removeCheck() {
+			 if (confirm("취소하시겠습니까?") == true){    //확인
+
+				 window.open('', '_self', '');
+
+				 window.close();
+
+			 }else{   //취소
+
+			     return false;
+
+			 }
+		}
+		function registerCheck() {
+			 if (confirm("등록하시겠습니까?") == true){    //확인
+
+				 window.open('', '_self', '');
+
+				 window.close();
+
+			 }else{   //취소
+
+			     return false;
+
+			 }
+		} 
+		
+	</script>-->
+    <!--  <title>정보화사업 등록</title>
+    
+    <style>
+        #wrap{
+            width:530px;
+            margin-left:auto; 
+            margin-right:auto;
+            text-align:center;
+        }
+        
+        table{
+            border:3px solid skyblue
+        }
+        
+        td{
+            border:1px solid skyblue
+        }
+        
+        #title{
+            background-color:skyblue
+        }
+    </style>-->
 </head>
 <body>
     <nav class ="navbar navbar-default">   <!-- navbar-색상 -->
@@ -59,15 +91,15 @@
                 <span class ="icon-bar"></span> <!-- 아이콘 이미지 -->
                 <span class ="icon-bar"></span>
             </button>
-			<a class="navbar-brand" href="index.jsp"><img alt="Brand" src="images/logo.jpg"></a>
+			<a class="navbar-brand" href="index.jsp"><img alt="Brand" src="images/logo.jpg"></a>	
             	<!-- bootstrap navbar 기본 메뉴바 -->
                                
         </div>        
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li><a href="index.jsp">메인</a></li>
-                <li class="active"><a href="boardView.jsp">게시판</a></li>
-                <li><a href="apvView.jsp">정보화 사업</a></li>
+                <li><a href="boardView.jsp">게시판</a></li>
+            	<li class="active"><a href="apvView.jsp">정보화 사업</a></li>
                 <li><a href="reqView.jsp">보안성 검토</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -77,7 +109,7 @@
                     	aria-expanded="false">회원관리<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                    	<li class="active"><a href="update.jsp">회원정보수정</a></li> 
+                    	<li><a href="update.jsp">회원정보수정</a></li> 
                         <li><a href="logoutAction.jsp">로그아웃</a></li>                  
                     </ul>
                 </li>
@@ -85,39 +117,59 @@
         <form action="./index.jsp" method="get" class="form-inline my-2 my-lg-0">
 			<input type="text" name="search" class="form-control mr-sm-2" type="search" placeholder="내용을 입력하세요." aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
-		</form>              
-       	</div> 
-	</nav>
-	<div class="container">
-		<form method="post" action="./boardReply" enctype="multipart/form-data">
+		</form>            
+       	</div>
+    </nav> 
+    <!-- 왼쪽, 오른쪽 바깥여백을 auto로 주면 중앙정렬된다.  -->
+    <div class="container">
+		<form method="post" action="./apvWrite" enctype="multipart/form-data">
 			<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
-						<th colspan="3"><h4>답변 작성 작성</h4></th>
+						<th colspan="3"><h4>정보화사업 등록</h4></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td style="width: 110px;"><h5>아이디</h5></td>
+						<td style="width: 130px; text-align: left;"><h5>1. 사업명</h5></td>
+						<td><input class="form-control" type="text" id="APV_NM" name="APV_NM" maxlength="64" placeholder="사업명을 입력하세요."></td>
+					</tr>
+					<tr>
+						<td style="width: 130px; text-align: left;"><h5>2. 사업 기간</h5></td>
+						<td><input class="form-control" type="text" id="APV_DATE" name="APV_DATE" maxlength="64" placeholder="사업기간을 입력하세요."></td>				
+					</tr>		
+					<tr>
+						<td style="width: 130px; text-align: left;"><h5>3. 사업 시작일</h5></td>
+						<td colspan="2"><input class="form-control" id="APV_STT_DATE" type="text" name="APV_STT_DATE" maxlength="10" placeholder="사업 시작일을 입력하세요."></td>				
+					</tr>
+					<tr>
+						<td style="width: 130px; text-align: left;"><h5>4. 사업 종료일</h5></td>
+						<td colspan="2"><input class="form-control" id="APV_FIN_DATE" type="text" name="APV_FIN_DATE" maxlength="10" placeholder="사업 종료일을 입력하세요."></td>				
+					</tr>
+					<tr>
+						<td style="width: 130px; text-align: left;"><h5>5. 소요 예산</h5></td>
+						<td colspan="2"><input class="form-control" id="APV_BUDGET" type="text" name="APV_BUDGET" maxlength="15" placeholder="소요 예산(원)을 입력하세요."></td>				
+					</tr>
+					<tr>
+						<td style="width: 130px;"><h5>6. 아이디</h5></td>
 						<td><h5><%= stf.getSTF_ID() %></h5>
-						<input type="hidden" name="STF_ID" value="<%= stf.getSTF_ID() %>">
-						<input type="hidden" name="BOARD_SQ" value="<%= BOARD_SQ %>"></td>							
+						<input type="hidden" name="STF_ID" value="<%= stf.getSTF_ID() %>"></td>						
 					</tr>
 					<tr>
-						<td style="width: 110px;"><h5>글 제목</h5></td>
-						<td><input class="form-control" type="text" maxlength="64" name="BOARD_NM" placeholder="글 제목을 입력하세요."></td>						
+						<td style="width: 130px; text-align: left;"><h5>7. 연락처</h5></td>						
+						<td colspan="2"><input class="form-control" id="APV_PHONE" type="text" name="APV_PHONE" maxlength="30" placeholder="연락처를 입력하세요."></td>							
 					</tr>
 					<tr>
-						<td style="width: 110px;"><h5>글 내용</h5></td>
-						<td><textarea class="form-control" rows="10" name="BOARD_TXT" maxlength="255" placeholder="글 내용을 입렵하세요."></textarea></td>					
-					</tr>											
+						<td style="width: 130px; text-align: left;"><h5>8. 사업방침번호</h5></td>						
+						<td colspan="2"><input class="form-control" id="APV_POLICY_SQ" type="text" name="APV_POLICY_SQ" maxlength="30" placeholder="사업방침번호를 입력하세요."></td>							
+					</tr>
 					<tr>
 						<td style="width: 110px;"><h5>파일 업로드</h5></td>
 						<td colspan="2">
-							<input type="file" name="BOARD_FILE" class="file">
+							<input type="file" name="APV_FILE" class="file">
 							<div class="input-group	col-xs-12">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-								<input type="text" class="form-control input-lg" disabled placeholder="파일을 업로드하세요.">
+								<input type="text" class="form-control input-lg" disabled placeholder="사업방침 첨부파일">
 								<span class="input-group-btn">
 									<button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i>파일찾기</button>
 								</span>
@@ -130,8 +182,10 @@
 					</tr>																														
 				</tbody>
 			</table>
+			<!-- <input class="btn btn-primary pull-right" type="button" value="취소" onclick="removeCheck()"> -->
+			<!--<input class="btn btn-primary pull-right" type="submit" value="등록" onclick="registerCheck()"> -->			
 		</form>
-	</div>	
+	</div>
 	
 	<%
 		String messageContent = null;
@@ -173,18 +227,6 @@
 	<%
 		session.removeAttribute("messageContent");
 		session.removeAttribute("messageType");
-		}
-	%>
-	<%
-		if (STF_ID != null) {
-	%>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				getUnread();
-				getInfiniteUnread();
-			});
-		</script>	
-	<%
 		}
 	%>
 	<script type="text/javascript">

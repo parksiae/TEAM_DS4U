@@ -1,7 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<%
+<%	
+	request.setCharacterEncoding("UTF-8");
+	String BOARD_DIVIDE = "게시판";
+	String searchType = "최신순";
+	String search = "";
+	int pageNumber = 0;
+	if (request.getParameter("BOARD_DIVIDE") != null) {
+		BOARD_DIVIDE = request.getParameter("BOARD_DIVIDE");
+	}
+	if (request.getParameter("searchType") != null) {
+		searchType = request.getParameter("searchType");
+	}
+	if (request.getParameter("search") != null) {
+		search = request.getParameter("search");
+	}
+	if (request.getParameter("pageNumber") != null) {
+		try {
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		} catch (Exception e) {
+			System.out.println("검색 페이지 번호 오류");
+		}		
+	}
 	String STF_ID = null;
 	if (session.getAttribute("STF_ID") != null) {
 		STF_ID = (String) session.getAttribute("STF_ID");
@@ -37,6 +58,8 @@
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li class="active"><a href="index.jsp">메인</a></li>
                 <li><a href="boardView.jsp">게시판</a></li>
+                <li><a href="apvView.jsp">정보화 사업</a></li>
+                <li><a href="reqView.jsp">보안성 검토</a></li>
             </ul>
             
 			<%
@@ -76,9 +99,58 @@
             <%
                 }
             %>
-
-       	</div> 
+		<form action="./index.jsp" method="get" class="form-inline my-2 my-lg-0">
+			<input type="text" name="search" class="form-control mr-sm-2" type="search" placeholder="내용을 입력하세요." aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+		</form>
 	</nav>
+
+    <!-- ----- 공지사항 줄 ------------------------------------------------------------------------------ -->
+    <div id="information">
+        <div class="content-container">
+            <section class="notice">
+                <h1 class="title">공지사항</h1>
+                <ul class="list margin-top">
+
+                    <li>
+                        <span class="notice-title">
+                            <a href="#">공지사항1</a>
+                        </span>
+                        <span>2020-11-02</span>
+                    </li>
+
+                    <li>
+                        <span class="notice-title">
+                            <a href="#">공지사항2</a>
+                        </span>
+                        <span>2020-11-01</span>
+                    </li>
+
+                    <li>
+                        <span class="notice-title">
+                            <a href="#">공지사항3</a>
+                        </span>
+                        <span>2020-10-30</span>
+                    </li>
+
+                    <li>
+                        <span class="notice-title">
+                            <a href="#">공지사항4</a>
+                        </span>
+                        <span>2020-10-28</span>
+                    </li>
+
+                    <li>
+                        <span class="notice-title">
+                            <a href="#">공지사항5</a>
+                        </span>
+                        <span>2020-10-25</span>
+                    </li>
+
+                </ul>
+            </section>
+        </div>
+    </div>
 	<%
 		String messageContent = null;
 		if (session.getAttribute("messageContent") != null) {
@@ -113,9 +185,6 @@
 			</div>
 		</div>
 	</div>
-	<footer class="bg-dark mt-4 p-5 text-center" style="color: #FFFFFF;">
-		Copyright &copy; 2020 DS4U.
-	</footer>
 	<script>
 		$('#messageModal').modal("show");
 	</script>	
@@ -123,6 +192,11 @@
 		session.removeAttribute("messageContent");
 		session.removeAttribute("messageType");
 		}
-	%>	         
+	%>
+
+    <footer id="footer" class="bg-dark mt-4 p-5 text-center" style="color: #FFFFFF;">
+		Copyright &copy; 2020 DS4U.
+	</footer>
+    	         
 </body>
 </html>

@@ -1,6 +1,7 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="stf.StfDTO" %>
-<%@ page import="stf.StfDAO" %>
+<%@ page import="req.ReqDAO" %>
+<%@ page import="req.ReqDTO" %>
 <!DOCTYPE html>
 <html>
 <%
@@ -12,20 +13,24 @@
 		session.setAttribute("messageType", "오류 메시지");
 		session.setAttribute("messageContent", "로그인이 필요합니다.");
 		response.sendRedirect("index.jsp");
-		return;		
+		return;	
 	}
-	StfDTO stf = new StfDAO().getUser(STF_ID);
-	String BOARD_SQ = null;
-	if (request.getParameter("BOARD_SQ") != null) {
-		BOARD_SQ = (String) request.getParameter("BOARD_SQ");
+	String REQ_SQ = null;
+	if (request.getParameter("REQ_SQ") != null) {
+		REQ_SQ = (String) request.getParameter("REQ_SQ");
 	}
-	if (BOARD_SQ == null || BOARD_SQ.equals("")) {
+	if (REQ_SQ == null || REQ_SQ.equals("")) {
 		session.setAttribute("messageType", "오류 메시지");
 		session.setAttribute("messageContent", "게시물을 선택해주세요.");
 		response.sendRedirect("index.jsp");
 		return;	
 	}
+
+	
+	ReqDAO reqDAO = new ReqDAO();
+	ReqDTO req = reqDAO.getReq(REQ_SQ);
 %>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">  <!-- 반응형 웹에 사용하는 메타태그 -->
@@ -35,17 +40,6 @@
 	<title>서울교통공사</title>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
-	<script type="text/javascript">
-		function passwordCheckFunction() {
-			var STF_PW1 = $('#STF_PW1').val();
-			var STF_PW2 = $('#STF_PW2').val();
-			if (STF_PW1 != STF_PW2) {
-				$('#passwordCheckMessage').html('비밀번호가 서로 다릅니다.');
-			} else {
-				$('#passwordCheckMessage').html('비밀번호 확인이 완료되었습니다.');
-			}
-		}	
-	</script>
 </head>
 <body>
     <nav class ="navbar navbar-default">   <!-- navbar-색상 -->
@@ -66,10 +60,33 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">       <!-- navbar-nav : 네비게이션 바 메뉴 -->
                 <li><a href="index.jsp">메인</a></li>
-                <li class="active"><a href="boardView.jsp">게시판</a></li>
+                <li><a href="boardView.jsp">게시판</a></li>
                 <li><a href="apvView.jsp">정보화 사업</a></li>
-                <li><a href="reqView.jsp">보안성 검토</a></li>
+                <li class="active"><a href="reqView.jsp">보안성 검토</a></li>
             </ul>
+            
+			<%
+            // 접속하기는 로그인이 되어있지 않은 경우만 나오게한다
+                if(STF_ID == null) {
+            %>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                	<a href="#" class="dropdown-toggle"
+                    	data-toggle="dropdown" role ="button" aria-haspopup="true"
+                    	aria-expanded="false">접속하기<span class="caret"></span>
+                    	<!-- 임시 주소링크 "#" -->
+                    	<!-- caret = caret 화살표 아이콘 ▼ -->
+                    </a>                   	
+                    <ul class="dropdown-menu">
+                        <li><a href="login.jsp">로그인</a></li>
+                        <li><a href="join.jsp">회원가입</a></li>                    
+                    </ul>
+                </li>
+            </ul>                             	
+            <%
+            // 로그인이 되어있는 사람만 볼수 있는 화면
+                } else {
+            %>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                 	<a href="#" class = "dropdown-toggle"
@@ -77,62 +94,66 @@
                     	aria-expanded="false">회원관리<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                    	<li class="active"><a href="update.jsp">회원정보수정</a></li> 
+                    	<li><a href="update.jsp">회원정보수정</a></li>
                         <li><a href="logoutAction.jsp">로그아웃</a></li>                  
                     </ul>
                 </li>
-            </ul>
+            </ul>            
+            <%
+                }
+            %>
         <form action="./index.jsp" method="get" class="form-inline my-2 my-lg-0">
 			<input type="text" name="search" class="form-control mr-sm-2" type="search" placeholder="내용을 입력하세요." aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
-		</form>              
+		</form>
        	</div> 
 	</nav>
 	<div class="container">
-		<form method="post" action="./boardReply" enctype="multipart/form-data">
-			<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd">
-				<thead>
-					<tr>
-						<th colspan="3"><h4>답변 작성 작성</h4></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td style="width: 110px;"><h5>아이디</h5></td>
-						<td><h5><%= stf.getSTF_ID() %></h5>
-						<input type="hidden" name="STF_ID" value="<%= stf.getSTF_ID() %>">
-						<input type="hidden" name="BOARD_SQ" value="<%= BOARD_SQ %>"></td>							
-					</tr>
-					<tr>
-						<td style="width: 110px;"><h5>글 제목</h5></td>
-						<td><input class="form-control" type="text" maxlength="64" name="BOARD_NM" placeholder="글 제목을 입력하세요."></td>						
-					</tr>
-					<tr>
-						<td style="width: 110px;"><h5>글 내용</h5></td>
-						<td><textarea class="form-control" rows="10" name="BOARD_TXT" maxlength="255" placeholder="글 내용을 입렵하세요."></textarea></td>					
-					</tr>											
-					<tr>
-						<td style="width: 110px;"><h5>파일 업로드</h5></td>
-						<td colspan="2">
-							<input type="file" name="BOARD_FILE" class="file">
-							<div class="input-group	col-xs-12">
-								<span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-								<input type="text" class="form-control input-lg" disabled placeholder="파일을 업로드하세요.">
-								<span class="input-group-btn">
-									<button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i>파일찾기</button>
-								</span>
-							</div>
-						</td>				
-					</tr>		
+		<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd">
+			<thead>
+				<tr>
+					<th colspan="2"><h4>보안성 검토 의뢰 상세보기</h4></th>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px; "><h5>사업명</h5></td>
+					<td colspan="2"><h5><%= req.getAPV_NM() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>추진 목적</h5></td>
+					<td colspan="2"><h5><%= req.getAPV_OBJ() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>사업 내용</h5></td>
+					<td colspan="2"><h5><%= req.getAPV_CONT() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>사업 기간</h5></td>
+					<td colspan="2"><h5><%= req.getAPV_DATE() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>검토 요청일</h5></td>
+					<td colspan="2"><h5><%= req.getREQ_DATE() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>회신일</h5></td>
+					<td colspan="2"><h5><%= req.getREQ_REC_DATE() %></h5></td>
+				</tr>
+				<tr>
+					<td style="background-color: #fafafa; color: #000000; width: 120px;"><h5>보안점검표 제출일</h5></td>
+					<td colspan="2"><h5><%= req.getREQ_SUB_DATE() %></h5></td>
+				</tr>				
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="5" style="text-align : right;">
+						<a href="apvView.jsp" class="btn btn-primary">목록</a>
 
-					<tr>
-						<td style="text-align: left;" colspan="3"><h5 style="color: red;"></h5><input class="btn btn-primary pull-right" type="submit" value="등록"></td>
-					</tr>																														
-				</tbody>
-			</table>
-		</form>
-	</div>	
-	
+					</td>
+				</tr>			
+			</tbody>
+		
+		</table>
+	</div>
 	<%
 		String messageContent = null;
 		if (session.getAttribute("messageContent") != null) {
@@ -167,34 +188,13 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		$('#messageModal').modal("show");
-	</script>		
 	<%
 		session.removeAttribute("messageContent");
 		session.removeAttribute("messageType");
 		}
-	%>
-	<%
-		if (STF_ID != null) {
-	%>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				getUnread();
-				getInfiniteUnread();
-			});
-		</script>	
-	<%
-		}
-	%>
-	<script type="text/javascript">
-		$(document).on('click', '.browse', function() {
-			var file = $(this).parent().parent().parent().find('.file');
-			file.trigger('click');
-		});
-		$(document).on('change', '.file', function() {
-			$(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
-		});
-	</script>        
+	%>	   
+	<script>
+		$('#messageModal').modal("show");
+	</script>	      
 </body>
 </html>

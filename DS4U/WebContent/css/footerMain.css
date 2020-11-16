@@ -1,0 +1,72 @@
+@charset "UTF-8";
+#footer{
+    width: 100%;
+    background-color: rgba(235, 242, 245, 0.37);
+    text-align: center;
+    font-size: 13px;
+}
+#footer-all {
+	padding-top: 20px;
+	padding-bottom: 50px;
+	margin-left: 100px;
+	margin-right: 100px;
+}
+#co-logo img {
+	width: 140px;
+}
+#co-location {
+	margin: 33px 0 10px;
+}
+
+#co-location p span {
+	display: inline-block;
+    padding-right: 15px;
+    position: relative;
+    vertical-align: middle;
+    line-height: 1.9;
+    font-weight: 500;	
+    color: #767676;	
+}
+
+#f2 p {
+	font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.025em;
+    line-height: 1.75;
+    color: #767676;	
+    display: inline-block;
+}
+#co-sns {
+	padding-top: 5px;
+	font-size: 25px;
+}
+#co-sns svg{
+	color: #767676;	
+}
+#co-sns li {
+	display: inline-block;	
+}
+.fab {
+	width: 30px;
+    font-size: 30px;
+    color: #767676;	
+}
+/* 페이지 탑 이동 버튼 */
+#btn_page_top {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: #EC6D63; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 8px 12px 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+#btn_page_top:hover {
+  background-color: #CFCCCF; /* Add a dark-grey background on hover */	
+}

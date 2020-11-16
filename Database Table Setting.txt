@@ -7,6 +7,7 @@ create table stf(
     STF_PH varchar(13),
     STF_EML varchar(30),
     STF_DEP varchar(20),
+    STF_PF varchar(50),
     primary key(STF_ID));
 
 [TABLE] BOARD - 게시판
